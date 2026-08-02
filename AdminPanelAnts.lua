@@ -1,108 +1,223 @@
---------https://docs.sirius.menu/rayfield--------
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
---▄▀█ █▀▄ █▀▄▀█ █ █▄░█ 
---█▀█ █▄▀ █░▀░█ █ █░▀█
---█▀█ ▄▀█ █▄░█ █▀▀ █░
---█▀▀ █▀█ █░▀█ ██▄ █▄
+-------- https://docs.sirius.menu/rayfield --------
+
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
+
+--// Services
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+--// Player
+local LocalPlayer = Players.LocalPlayer
+
+--// Variables
+local SelectedBrickColor = BrickColor.new("White")
+local MessageText = ""
+local TargetMode = "All"
+
+--// Remote used by the announcement system.
+--// CHANGE "AnnounceRemote" if your game's RemoteEvent has a different name.
+local AnnounceRemote = ReplicatedStorage:FindFirstChild("AnnounceRemote")
+
+--// Hook states
+local AntiCheatHooked = false
+local WeatherHooked = false
+
+--------------------------------------------------------
+-- Window
+--------------------------------------------------------
 
 local Window = Rayfield:CreateWindow({
-   Name = "Ant Panel Premium",
-   Icon = "shield-check",
-   LoadingTitle = "Ant Admin Panel",
-   LoadingSubtitle = "Shitting hard or hardly shitting?",
-   ShowText = "Admin Panel",
-   Theme = "AmberGlow", -- Check https://docs.sirius.menu/rayfield/configuration/themes for more
+    Name = "Ant Panel Premium",
+    Icon = "shield-check",
 
-   ToggleUIKeybind = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
+    LoadingTitle = "Ant Admin Panel",
+    LoadingSubtitle = "Shitting hard or hardly shitting?",
 
-   DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false,
+    ShowText = "Admin Panel",
+    Theme = "AmberGlow",
 
-   ConfigurationSaving = {
-      Enabled = false,
-      FolderName = nil, -- Create a custom folder for your hub/game
-      FileName = "we wont use this"
-   },
+    ToggleUIKeybind = "K",
 
-   Discord = {
-      Enabled = false, -- Prompt the user to join my Discord server if their executor supports it
-      Invite = "noinvitelink",
-      RememberJoins = false
-   },
+    DisableRayfieldPrompts = false,
+    DisableBuildWarnings = false,
 
-   KeySystem = true,
-   KeySettings = {
-      Title = "Admin Panel",
-      Subtitle = "Admin abuse???",
-      Note = "Hint: What's my favorite fruit?",
-      FileName = "Key", -- we won't need this
-      SaveKey = true,
-      GrabKeyFromSite = false,
-      Key = {"Apple"}
-   }
+    ConfigurationSaving = {
+        Enabled = false,
+        FolderName = nil,
+        FileName = "we wont use this"
+    },
+
+    Discord = {
+        Enabled = false,
+        Invite = "noinvitelink",
+        RememberJoins = false
+    },
+
+    KeySystem = true,
+
+    KeySettings = {
+        Title = "Admin Panel",
+        Subtitle = "Admin abuse???",
+        Note = "Hint: What's my favorite fruit?",
+        FileName = "Key",
+        SaveKey = true,
+        GrabKeyFromSite = false,
+        Key = {
+            "Apple"
+        }
+    }
 })
 
--- TABS TO USE
+--------------------------------------------------------
+-- Main Tab
+--------------------------------------------------------
 
 local Main = Window:CreateTab("Main", "message-circle")
 
--- Main tab
+Main:CreateLabel(
+    "Bypass stuff inside the game",
+    "info",
+    Color3.fromRGB(255, 255, 255),
+    false
+)
 
-local Label = Main:CreateLabel("Bypass stuff inside the game", "info", Color3.fromRGB(255, 255, 255), false) -- Title, Icon, Color, Ignoretheme?
+Main:CreateDivider()
 
-local Divider = Main:CreateDivider()
+--------------------------------------------------------
+-- Anti-Cheat Bypass
+--------------------------------------------------------
 
-local ButtonCheat = Main:CreateButton({
-   Name = "Bypass anticheat",
-   Callback = function()
-   local Event = game:GetService("ReplicatedStorage"):WaitForChild("Kickthem")
+Main:CreateButton({
+    Name = "Bypass anticheat",
 
-local oldNamecall
-oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
-    local method = getnamecallmethod()
+    Callback = function()
 
-    if self == Event and method == "FireServer" then
-        print("detected anticheat call, blocked")
-        return nil
+        if AntiCheatHooked then
+            Rayfield:Notify({
+                Title = "Anticheat",
+                Content = "Anticheat bypass is already enabled.",
+                Duration = 3,
+                Image = "circle-check"
+            })
+            return
+        end
+
+        local Event = ReplicatedStorage:FindFirstChild("Kickthem")
+
+        if not Event then
+            Rayfield:Notify({
+                Title = "Anticheat",
+                Content = "Kickthem RemoteEvent was not found.",
+                Duration = 4,
+                Image = "circle-x"
+            })
+            return
+        end
+
+        if not hookmetamethod or not newcclosure or not getnamecallmethod then
+            Rayfield:Notify({
+                Title = "Anticheat",
+                Content = "Your executor does not support the required hook functions.",
+                Duration = 4,
+                Image = "circle-x"
+            })
+            return
+        end
+
+        local oldNamecall
+
+        oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+            local Method = getnamecallmethod()
+
+            if self == Event and Method == "FireServer" then
+                print("[Ant Panel] Detected anticheat call - blocked")
+                return nil
+            end
+
+            return oldNamecall(self, ...)
+        end))
+
+        AntiCheatHooked = true
+
+        Rayfield:Notify({
+            Title = "Anticheat",
+            Content = "Walkspeed + Flying enabled permanently",
+            Duration = 3,
+            Image = "circle-check"
+        })
     end
-
-    return oldNamecall(self, ...)
-end))
-Rayfield:Notify({
-   Title = "Anticheat",
-   Content = "Walkspeed + Flying enabled permanently",
-   Duration = 3,
-   Image = "circle-check",
-})
-   end,
 })
 
-local ButtonWeather = Main:CreateButton({
-   Name = "Bypass Weather",
-   Callback = function()
-   local Event = game:GetService("ReplicatedStorage").DamageHumanoid
+--------------------------------------------------------
+-- Weather Bypass
+--------------------------------------------------------
 
-local oldNamecall
-oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
-    local method = getnamecallmethod()
+Main:CreateButton({
+    Name = "Bypass Weather",
 
-    if self == Event and method == "FireServer" then
-        print("weather tried to kill you, blocked it.")
-        return nil
+    Callback = function()
+
+        if WeatherHooked then
+            Rayfield:Notify({
+                Title = "Weather",
+                Content = "Weather damage bypass is already enabled.",
+                Duration = 3,
+                Image = "circle-check"
+            })
+            return
+        end
+
+        local Event = ReplicatedStorage:FindFirstChild("DamageHumanoid")
+
+        if not Event then
+            Rayfield:Notify({
+                Title = "Weather",
+                Content = "DamageHumanoid RemoteEvent was not found.",
+                Duration = 4,
+                Image = "circle-x"
+            })
+            return
+        end
+
+        if not hookmetamethod or not newcclosure or not getnamecallmethod then
+            Rayfield:Notify({
+                Title = "Weather",
+                Content = "Your executor does not support the required hook functions.",
+                Duration = 4,
+                Image = "circle-x"
+            })
+            return
+        end
+
+        local oldNamecall
+
+        oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+            local Method = getnamecallmethod()
+
+            if self == Event and Method == "FireServer" then
+                print("[Ant Panel] Weather damage detected - blocked")
+                return nil
+            end
+
+            return oldNamecall(self, ...)
+        end))
+
+        WeatherHooked = true
+
+        Rayfield:Notify({
+            Title = "Weather",
+            Content = "Won't take blizzard or rain damage.",
+            Duration = 3,
+            Image = "circle-check"
+        })
     end
-
-    return oldNamecall(self, ...)
-end))
-Rayfield:Notify({
-   Title = "Weather",
-   Content = "Won't take blizzard or rain damage.",
-   Duration = 3,
-   Image = "circle-check",
-})
-   end,
 })
 
-local Divider = Main:CreateDivider()
+Main:CreateDivider()
+
+--------------------------------------------------------
+-- BrickColor List
+--------------------------------------------------------
 
 local BrickColorNames = {
     "White",
@@ -149,21 +264,41 @@ local BrickColorNames = {
 
 table.sort(BrickColorNames)
 
+--------------------------------------------------------
+-- Color Dropdown
+--------------------------------------------------------
+
 Main:CreateDropdown({
-	Name = "Color",
-	Options = BrickColorNames,
-	CurrentOption = {
-		SelectedBrickColor.Name
-	},
-	MultipleOptions = false,
+    Name = "Color",
 
-	Callback = function(Options)
-		local Choice = typeof(Options) == "table" and Options[1] or Options
+    Options = BrickColorNames,
 
-		if Choice then
-			SelectedBrickColor = BrickColor.new(Choice)
-		end
-	end
+    CurrentOption = {
+        SelectedBrickColor.Name
+    },
+
+    MultipleOptions = false,
+
+    Callback = function(Options)
+
+        local Choice
+
+        if typeof(Options) == "table" then
+            Choice = Options[1]
+        else
+            Choice = Options
+        end
+
+        if Choice then
+            local Success, Result = pcall(function()
+                return BrickColor.new(Choice)
+            end)
+
+            if Success then
+                SelectedBrickColor = Result
+            end
+        end
+    end
 })
 
 --------------------------------------------------------
@@ -171,14 +306,17 @@ Main:CreateDropdown({
 --------------------------------------------------------
 
 Main:CreateInput({
-	Name = "Message",
-	CurrentValue = "",
-	PlaceholderText = "Enter announcement...",
-	RemoveTextAfterFocusLost = false,
+    Name = "Message",
 
-	Callback = function(Text)
-		MessageText = Text
-	end
+    CurrentValue = "",
+
+    PlaceholderText = "Enter announcement...",
+
+    RemoveTextAfterFocusLost = false,
+
+    Callback = function(Text)
+        MessageText = Text or ""
+    end
 })
 
 --------------------------------------------------------
@@ -186,135 +324,206 @@ Main:CreateInput({
 --------------------------------------------------------
 
 Main:CreateDropdown({
-	Name = "Target",
-	Options = {
-		"All",
-		"Me",
-		"Nearest",
-		"Team"
-	},
+    Name = "Target",
 
-	CurrentOption = {
-		"All"
-	},
+    Options = {
+        "All",
+        "Me",
+        "Nearest",
+        "Team"
+    },
 
-	MultipleOptions = false,
+    CurrentOption = {
+        "All"
+    },
 
-	Callback = function(Options)
-		local Choice = typeof(Options) == "table" and Options[1] or Options
+    MultipleOptions = false,
 
-		if Choice then
-			TargetMode = Choice
-		end
-	end
+    Callback = function(Options)
+
+        local Choice
+
+        if typeof(Options) == "table" then
+            Choice = Options[1]
+        else
+            Choice = Options
+        end
+
+        if Choice then
+            TargetMode = Choice
+        end
+    end
 })
+
 --------------------------------------------------------
--- Part 2
--- Helper Functions + Message Button
+-- Helper: Send Message
 --------------------------------------------------------
 
-local function SendToPlayer(player)
-	if not player then
-		return
-	end
+local function SendToPlayer(Player)
 
-   AnnounceRemote:FireServer(
-		SelectedBrickColor,
-		player,
-		MessageText
-	)
+    if not Player then
+        return
+    end
+
+    if not AnnounceRemote then
+        return
+    end
+
+    AnnounceRemote:FireServer(
+        SelectedBrickColor,
+        Player,
+        MessageText
+    )
 end
+
+--------------------------------------------------------
+-- Helper: Find Nearest Player
+--------------------------------------------------------
 
 local function GetNearestPlayer()
-	local Character = LocalPlayer.Character
-	if not Character then
-		return nil
-	end
 
-	local Root = Character:FindFirstChild("HumanoidRootPart")
-	if not Root then
-		return nil
-	end
+    local Character = LocalPlayer.Character
 
-	local NearestPlayer
-	local ClosestDistance = math.huge
+    if not Character then
+        return nil
+    end
 
-	for _, Player in ipairs(Players:GetPlayers()) do
-		if Player ~= LocalPlayer then
-			local Char = Player.Character
-			local HumanoidRootPart = Char and Char:FindFirstChild("HumanoidRootPart")
+    local Root = Character:FindFirstChild("HumanoidRootPart")
 
-			if HumanoidRootPart then
-				local Distance = (Root.Position - HumanoidRootPart.Position).Magnitude
+    if not Root then
+        return nil
+    end
 
-				if Distance < ClosestDistance then
-					ClosestDistance = Distance
-					NearestPlayer = Player
-				end
-			end
-		end
-	end
+    local NearestPlayer = nil
+    local ClosestDistance = math.huge
 
-	return NearestPlayer
+    for _, Player in ipairs(Players:GetPlayers()) do
+
+        if Player ~= LocalPlayer then
+
+            local Character = Player.Character
+
+            local HumanoidRootPart =
+                Character and Character:FindFirstChild("HumanoidRootPart")
+
+            if HumanoidRootPart then
+
+                local Distance =
+                    (Root.Position - HumanoidRootPart.Position).Magnitude
+
+                if Distance < ClosestDistance then
+                    ClosestDistance = Distance
+                    NearestPlayer = Player
+                end
+            end
+        end
+    end
+
+    return NearestPlayer
 end
 
 --------------------------------------------------------
--- Message Button
+-- Send Message Button
 --------------------------------------------------------
 
 Main:CreateButton({
-	Name = "Send Message",
+    Name = "Send Message",
 
-	Callback = function()
+    Callback = function()
 
-		if MessageText == "" then
-			Rayfield:Notify({
-				Title = "Announce GUI",
-				Content = "Please enter a message first.",
-				Duration = 3,
-				Image = 4483362458
-			})
-			return
-		end
+        if MessageText == "" then
 
-		if TargetMode == "Me" then
+            Rayfield:Notify({
+                Title = "Announce GUI",
+                Content = "Please enter a message first.",
+                Duration = 3,
+                Image = "circle-x"
+            })
 
-			SendToPlayer(LocalPlayer)
+            return
+        end
 
-		elseif TargetMode == "Nearest" then
+        if not AnnounceRemote then
 
-			-- Send to yourself
-			SendToPlayer(LocalPlayer)
+            Rayfield:Notify({
+                Title = "Announce GUI",
+                Content = "AnnounceRemote was not found in ReplicatedStorage.",
+                Duration = 4,
+                Image = "circle-x"
+            })
 
-			-- Send to nearest player
-			local Nearest = GetNearestPlayer()
+            return
+        end
 
-			if Nearest then
-				SendToPlayer(Nearest)
-			end
+        ------------------------------------------------
+        -- Me
+        ------------------------------------------------
 
-		elseif TargetMode == "Team" then
+        if TargetMode == "Me" then
 
-			for _, Player in ipairs(Players:GetPlayers()) do
-				if Player.Team == LocalPlayer.Team then
-					SendToPlayer(Player)
-				end
-			end
+            SendToPlayer(LocalPlayer)
 
-		elseif TargetMode == "All" then
+        ------------------------------------------------
+        -- Nearest
+        ------------------------------------------------
 
-			for _, Player in ipairs(Players:GetPlayers()) do
-				SendToPlayer(Player)
-			end
+        elseif TargetMode == "Nearest" then
 
-		end
+            -- Send to yourself
+            SendToPlayer(LocalPlayer)
 
-		Rayfield:Notify({
-			Title = "Announcement",
-			Content = "Announcement sent!",
-			Duration = 3,
-			Image = 4483362458
-		})
+            -- Send to nearest player
+            local Nearest = GetNearestPlayer()
 
-	end
+            if Nearest then
+                SendToPlayer(Nearest)
+            end
+
+        ------------------------------------------------
+        -- Team
+        ------------------------------------------------
+
+        elseif TargetMode == "Team" then
+
+            for _, Player in ipairs(Players:GetPlayers()) do
+
+                if Player.Team == LocalPlayer.Team then
+                    SendToPlayer(Player)
+                end
+
+            end
+
+        ------------------------------------------------
+        -- All
+        ------------------------------------------------
+
+        elseif TargetMode == "All" then
+
+            for _, Player in ipairs(Players:GetPlayers()) do
+                SendToPlayer(Player)
+            end
+        end
+
+        ------------------------------------------------
+        -- Notification
+        ------------------------------------------------
+
+        Rayfield:Notify({
+            Title = "Announcement",
+            Content = "Announcement sent!",
+            Duration = 3,
+            Image = "circle-check"
+        })
+    end
+})
+
+--------------------------------------------------------
+-- Finished
+--------------------------------------------------------
+
+Rayfield:Notify({
+    Title = "Ant Panel Premium",
+    Content = "Loaded successfully!",
+    Duration = 3,
+    Image = "circle-check"
 })
