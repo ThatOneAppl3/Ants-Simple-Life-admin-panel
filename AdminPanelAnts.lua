@@ -44,11 +44,11 @@ local Window = Rayfield:CreateWindow({
 
 -- TABS TO USE
 
-local Main = Window:CreateTab("Main", "rewind")
+local Main = Window:CreateTab("Main", "house")
 
 -- Main tab
 
-local Label = Main:CreateLabel("Game", 4483362458, Color3.fromRGB(255, 255, 255), false) -- Title, Icon, Color, Ignoretheme?
+local Label = Main:CreateLabel("Bypass stuff inside the game", "info", Color3.fromRGB(255, 255, 255), false) -- Title, Icon, Color, Ignoretheme?
 
 local Divider = Main:CreateDivider()
 
@@ -72,7 +72,7 @@ Rayfield:Notify({
    Title = "Anticheat",
    Content = "Walkspeed + Flying enabled permanently",
    Duration = 3,
-   Image = 4483362458,
+   Image = "circle-check",
 })
    end,
 })
@@ -97,7 +97,7 @@ Rayfield:Notify({
    Title = "Weather",
    Content = "Won't take blizzard or rain damage.",
    Duration = 3,
-   Image = 4483362458,
+   Image = "circle-check",
 })
    end,
 })
