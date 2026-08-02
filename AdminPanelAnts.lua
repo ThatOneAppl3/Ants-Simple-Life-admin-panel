@@ -44,7 +44,7 @@ local Window = Rayfield:CreateWindow({
 
 -- TABS TO USE
 
-local Main = Window:CreateTab("Main", "tool-case")
+local Main = Window:CreateTab("Main", "rewind")
 
 -- Main tab
 
