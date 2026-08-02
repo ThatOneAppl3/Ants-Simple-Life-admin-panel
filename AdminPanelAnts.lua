@@ -541,7 +541,7 @@ Main:CreateButton({
 
 local Scripts = Window:CreateTab("Scripts", "save")
 
-local Button = Tab:CreateButton({
+local Button = Scripts:CreateButton({
    Name = "Waypoints v1",
    Callback = function()
    local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/ThatOneAppl3/Ants-Simple-Life-admin-panel/refs/heads/main/Waypoints%20v1"))()
