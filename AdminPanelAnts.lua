@@ -537,6 +537,16 @@ Main:CreateButton({
     end
 })
 
+-- Scripts tab
+
+local Scripts = Window:CreateTab("Scripts", "save")
+
+local Button = Tab:CreateButton({
+   Name = "Scriptname",
+   Callback = function()
+   -- stub
+   end,
+})
 --------------------------------------------------------
 -- Finished
 --------------------------------------------------------
