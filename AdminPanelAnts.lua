@@ -235,6 +235,27 @@ Main:CreateButton({
 
 Main:CreateDivider()
 
+Main:CreateButton({
+	Name = "Instant Larva Food",
+	Callback = function()
+
+		local Event = LocalPlayer.PlayerGui:WaitForChild("MainLarvaeui")
+			.Frame.Frame.Play.ForcePlay
+
+		for i = 1, 80 do
+			Event:FireServer("FOODNOW!")
+		end
+
+		Rayfield:Notify({
+			Title = "Larva",
+			Content = "You have grown!",
+			Duration = 3
+		})
+
+	end
+})
+
+Main:CreateDivider()
 --------------------------------------------------------
 -- BrickColor List
 --------------------------------------------------------
