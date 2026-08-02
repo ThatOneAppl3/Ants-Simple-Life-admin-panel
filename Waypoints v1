@@ -6,6 +6,6 @@ local Button = Tab:CreateButton({
    Name = "Reload the script",
    Callback = function()
    print("Ez bro")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ThatOneAppl3/Ants-Simple-Life-admin-panel/refs/heads/main/AdminPanelAnts.lua"))()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/ThatOneAppl3/Ants-Simple-Life-admin-panel/refs/heads/main/AdminPanelAnts.lua"))()
    end,
 })
