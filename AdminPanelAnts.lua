@@ -44,7 +44,7 @@ local Window = Rayfield:CreateWindow({
 
 -- TABS TO USE
 
-local Main = Window:CreateTab("Main", "house")
+local Main = Window:CreateTab("Main", "message-circle")
 
 -- Main tab
 
