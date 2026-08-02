@@ -544,7 +544,14 @@ local Scripts = Window:CreateTab("Scripts", "save")
 local Button = Scripts:CreateButton({
    Name = "Waypoints v1",
    Callback = function()
-   local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/ThatOneAppl3/Ants-Simple-Life-admin-panel/refs/heads/main/Waypoints%20v1"))()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/ThatOneAppl3/Ants-Simple-Life-admin-panel/refs/heads/main/Waypoints%20v1"))()
+   end,
+})
+
+local Button = Scripts:CreateButton({
+   Name = "Flying script",
+   Callback = function()
+   loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-The-best-fly-gui-246203"))()
    end,
 })
 --------------------------------------------------------
