@@ -6,11 +6,31 @@ local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local LocalPlayer = Players.LocalPlayer
+
+local AnnounceRemote = ReplicatedStorage:WaitForChild("Annouce", 10)
+
+if not AnnounceRemote then
+    warn("================================")
+    warn("ANNOUCE WAS NOT FOUND")
+    warn("Objects currently in ReplicatedStorage:")
+
+    for _, Object in ipairs(ReplicatedStorage:GetDescendants()) do
+        print(Object:GetFullName(), Object.ClassName)
+    end
+
+    warn("================================")
+else
+    print("FOUND ANNOUCE!")
+    print("Path:", AnnounceRemote:GetFullName())
+    print("Class:", AnnounceRemote.ClassName)
+end
+
 --// Player
 local LocalPlayer = Players.LocalPlayer
 
 --// Variables
-local SelectedBrickColor = BrickColor.new("White")
+local SelectedBrickColor = BrickColor.new("Bright Red")
 local MessageText = ""
 local TargetMode = "All"
 
