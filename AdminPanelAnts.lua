@@ -16,7 +16,7 @@ local TargetMode = "All"
 
 --// Remote used by the announcement system.
 --// CHANGE "AnnounceRemote" if your game's RemoteEvent has a different name.
-local AnnounceRemote = ReplicatedStorage:FindFirstChild("AnnounceRemote")
+local AnnounceRemote = ReplicatedStorage:WaitForChild("Annouce")
 
 --// Hook states
 local AntiCheatHooked = false
