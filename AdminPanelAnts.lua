@@ -558,6 +558,8 @@ Main:CreateButton({
     end
 })
 
+Main:CreateDivider()
+
 local InfFood = false
 
 Main:CreateToggle({
