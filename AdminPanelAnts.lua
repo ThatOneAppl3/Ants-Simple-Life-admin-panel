@@ -558,6 +558,55 @@ Main:CreateButton({
     end
 })
 
+local InfFood = false
+
+Main:CreateToggle({
+    Name = "Inf Food/Energy",
+    CurrentValue = false,
+    Flag = "InfFoodEnergy",
+    Callback = function(Value)
+        InfFood = Value
+
+        if Value then
+            task.spawn(function()
+                while InfFood do
+                    local Event = game:GetService("ReplicatedStorage").GivePlayerFood
+                    local Callback = getcallbackvalue(Event, "OnClientInvoke")
+
+                    if Callback then
+                        pcall(function()
+                            Callback(0, 80)
+                            Callback(1, 80)
+                        end)
+                    end
+
+                    task.wait(10)
+                end
+            end)
+        end
+    end,
+})
+
+Main:CreateButton({
+    Name = "Growl",
+    Callback = function()
+        local Event = game:GetService("ReplicatedStorage").SHOWIT
+        local Player = game:GetService("Players").LocalPlayer
+        local Character = Player.Character
+
+        if Character and Character:FindFirstChild("Torso") then
+            firesignal(
+                Event.OnClientEvent,
+                {
+                    Character.Torso
+                },
+                Color3.new(0, 0, 0),
+                2992299292929929292929922929292929292992929292929929292929292929299999292992929299292992
+            )
+        end
+    end,
+})
+
 -- Scripts tab
 
 local Scripts = Window:CreateTab("Scripts", "save")
