@@ -636,3 +636,68 @@ Rayfield:Notify({
     Duration = 3,
     Image = "circle-check"
 })
+
+local EventsTab = Window:CreateTab("Events")
+
+-- 🟤 Copper INFECTION!
+local CopperSection = EventsTab:CreateSection("🟤 Copper INFECTION!")
+
+EventsTab:CreateParagraph({
+    Title = "Color: Copper",
+    Content = "You are Patient Zero. Travel from the Copper tutorial map to the mainland and spread Copper throughout the server."
+})
+
+-- 🌎 Sandbox
+local SandboxSection = EventsTab:CreateSection("🌎 Sandbox")
+
+EventsTab:CreateParagraph({
+    Title = "Color: Any",
+    Content = "Bring a mainland colony to the Copper tutorial map. The tutorial area becomes a huge sandbox with infinite food, building space, and lots of things to do."
+})
+
+-- 🌌 Void Civ
+local VoidCivSection = EventsTab:CreateSection("🌌 Void Civ")
+
+EventsTab:CreateParagraph({
+    Title = "Color: Any",
+    Content = "Build a civilization on an island floating above the void. Players develop their own society and colony. The game's weird digging other ants for soil mechanic can become part of the civilization's economy."
+})
+
+-- 🐝 Not the Bees!
+local BeesSection = EventsTab:CreateSection("🐝 Not the Bees!")
+
+EventsTab:CreateParagraph({
+    Title = "Color: 🟡 Gold",
+    Content = "You become a Gold Queen and, with another Alate, establish an Alate colony/hive around the big tree. Expand the hive with new rooms and defend it from invaders. Gold is used because it fits the bee theme."
+})
+
+-- 🛰️ Space Colony
+local SpaceSection = EventsTab:CreateSection("🛰️ Space Colony")
+
+EventsTab:CreateParagraph({
+    Title = "Color: Any",
+    Content = "Build a colony upward into the sky, eventually creating a floating/space-like settlement."
+})
+
+-- 🌎 True Mainland
+local TrueMainlandSection = EventsTab:CreateSection("🌎 True Mainland")
+
+EventsTab:CreateParagraph({
+    Title = "Color: 🟤 Copper",
+    Content = "All five colonies exist on the full mainland: Purple, Green, Gold, Ghost, and Copper."
+})
+
+-- 🏴‍☠️ Pirates
+local PiratesSection = EventsTab:CreateSection("🏴‍☠️ Pirates")
+
+EventsTab:CreateParagraph({
+    Title = "Color: Any",
+    Content = "Create a pirate-themed colony/settlement. The event is primarily roleplay and construction rather than requiring a particular ant color."
+})
+-- 🌍 New World
+local NewWorldSection = EventsTab:CreateSection("🌍 New World")
+
+EventsTab:CreateParagraph({
+    Title = "Color: Any",
+    Content = "Everyone goes out looking for somewhere that hasn't been colonized yet. Once they find a suitable location, they establish a completely new colony there. The players decide what the new settlement becomes."
+})local EventsTab = Window:CreateTab("Events")
