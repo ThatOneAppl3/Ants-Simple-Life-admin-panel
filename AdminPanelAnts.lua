@@ -700,4 +700,4 @@ local NewWorldSection = EventsTab:CreateSection("🌍 New World")
 EventsTab:CreateParagraph({
     Title = "Color: Any",
     Content = "Everyone goes out looking for somewhere that hasn't been colonized yet. Once they find a suitable location, they establish a completely new colony there. The players decide what the new settlement becomes."
-})local EventsTab = Window:CreateTab("Events")
+})
